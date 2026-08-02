@@ -1,9 +1,12 @@
 const path = require('path');
+const fs = require('fs');
 const multer = require('multer');
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, path.join(__dirname, '..', 'uploads'));
+    const dir = process.env.VERCEL ? '/tmp/uploads' : path.join(__dirname, '..', 'uploads');
+    fs.mkdirSync(dir, { recursive: true });
+    cb(null, dir);
   },
   filename(req, file, cb) {
     const ext = path.extname(file.originalname);
