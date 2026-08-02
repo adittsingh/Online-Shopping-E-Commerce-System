@@ -17,7 +17,7 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/api', (req, res) => {
-  res.json({ message: 'Welcome to the Online Shopping API' });
+  res.json({ message: 'Welcome to the Stockedup API' });
 });
 
 app.use('/api/auth', require('./routes/authRoutes'));

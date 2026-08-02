@@ -28,7 +28,14 @@ const Navbar = () => {
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
       <div className="container">
         <Link to="/" className="navbar-brand fw-bold d-flex align-items-center">
-          <FaBoxOpen className="me-2 text-primary" /> ShopNow
+          <img
+            src="/logo.svg"
+            alt="Stockedup"
+            width="32"
+            height="32"
+            className="me-2"
+          />{" "}
+          Stockedup
         </Link>
         <button
           className="navbar-toggler"

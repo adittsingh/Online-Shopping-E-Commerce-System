@@ -41,7 +41,7 @@ const RegisterPage = () => {
             <FaUserPlus className="text-primary me-2" /> Register
           </h2>
           <p className="text-center text-muted mb-4">
-            Create your ShopNow account
+            Create your Stockedup account
           </p>
           {error && <Message variant="danger">{error}</Message>}
           <form onSubmit={handleSubmit}>

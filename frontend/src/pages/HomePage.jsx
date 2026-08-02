@@ -68,7 +68,7 @@ const HomePage = () => {
     <div>
       <section className="hero-section text-white text-center py-5">
         <div className="container">
-          <h1 className="display-4 fw-bold">Welcome to ShopNow</h1>
+          <h1 className="display-4 fw-bold">Welcome to Stockedup</h1>
           <p className="lead">
             Discover amazing products at unbeatable prices. Shop the latest
             electronics, fashion, home essentials and more.

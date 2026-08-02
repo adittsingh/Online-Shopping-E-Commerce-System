@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaBoxOpen, FaGithub, FaEnvelope, FaPhone } from 'react-icons/fa';
+import { FaGithub, FaEnvelope, FaPhone } from 'react-icons/fa';
 
 const Footer = () => {
   return (
@@ -9,7 +9,14 @@ const Footer = () => {
         <div className="row g-4">
           <div className="col-md-4">
             <h5 className="fw-bold d-flex align-items-center">
-              <FaBoxOpen className="me-2 text-primary" /> ShopNow
+              <img
+                src="/logo.svg"
+                alt="Stockedup"
+                width="30"
+                height="30"
+                className="me-2"
+              />{" "}
+              Stockedup
             </h5>
             <p className="text-white-50 small">
               Your one-stop online shopping destination. Quality products at the
@@ -40,7 +47,7 @@ const Footer = () => {
             <h5>Contact</h5>
             <ul className="list-unstyled small text-white-50">
               <li>
-                <FaEnvelope className="me-2" /> support@shopnow.com
+                <FaEnvelope className="me-2" /> support@stockedup.com
               </li>
               <li>
                 <FaPhone className="me-2" /> +91 98765 43210
@@ -54,7 +61,7 @@ const Footer = () => {
       </div>
       <div className="text-center py-3 border-top border-secondary mt-4">
         <small className="text-white-50">
-          &copy; {new Date().getFullYear()} ShopNow. All rights reserved.
+          &copy; {new Date().getFullYear()} Stockedup. All rights reserved.
         </small>
       </div>
     </footer>

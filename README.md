@@ -1,4 +1,4 @@
-# Online Shopping (E-Commerce) System
+# Stockedup - Online Shopping (E-Commerce) System
 
 A full-featured **Online Shopping (E-Commerce) System** built with the **MERN Stack** (MongoDB, Express.js, React.js, Node.js). Users can browse products, search & filter by category/price, manage a shopping cart, place orders, and manage their profile. An admin dashboard enables administrators to manage products, categories, users, and customer orders through a secure role-based interface.
 

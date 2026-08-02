@@ -1,7 +1,7 @@
 {
   "name": "online-shopping-backend",
   "version": "1.0.0",
-  "description": "Backend API for Online Shopping (E-Commerce) System",
+  "description": "Backend API for Stockedup (Online Shopping E-Commerce System)",
   "main": "server.js",
   "type": "commonjs",
   "scripts": {

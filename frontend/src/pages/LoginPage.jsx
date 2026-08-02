@@ -31,7 +31,7 @@ const LoginPage = () => {
             <FaSignInAlt className="text-primary me-2" /> Login
           </h2>
           <p className="text-center text-muted mb-4">
-            Sign in to your ShopNow account
+            Sign in to your Stockedup account
           </p>
           {error && <Message variant="danger">{error}</Message>}
           <form onSubmit={handleSubmit}>

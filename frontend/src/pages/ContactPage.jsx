@@ -27,13 +27,13 @@ const ContactPage = () => {
               <h5 className="fw-bold mb-3">Get in Touch</h5>
               <p className="mb-3">
                 <FaMapMarkerAlt className="text-primary me-2" />
-                ShopNow HQ, 123 Market Street, Delhi, India
+                Stockedup HQ, 123 Market Street, Delhi, India
               </p>
               <p className="mb-3">
                 <FaPhone className="text-primary me-2" /> +91 98765 43210
               </p>
               <p className="mb-3">
-                <FaEnvelope className="text-primary me-2" /> support@shopnow.com
+                <FaEnvelope className="text-primary me-2" /> support@stockedup.com
               </p>
             </div>
           </div>
