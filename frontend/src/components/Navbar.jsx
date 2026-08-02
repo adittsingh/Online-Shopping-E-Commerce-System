@@ -29,11 +29,12 @@ const Navbar = () => {
       <div className="container">
         <Link to="/" className="navbar-brand fw-bold d-flex align-items-center">
           <img
-            src="/logo.svg"
+            src="/logo.png"
             alt="Stockedup"
-            width="32"
-            height="32"
-            className="me-2"
+            width="36"
+            height="36"
+            className="me-2 rounded"
+            style={{ objectFit: 'contain' }}
           />{" "}
           Stockedup
         </Link>

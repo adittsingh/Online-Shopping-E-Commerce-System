@@ -10,11 +10,12 @@ const Footer = () => {
           <div className="col-md-4">
             <h5 className="fw-bold d-flex align-items-center">
               <img
-                src="/logo.svg"
+                src="/logo.png"
                 alt="Stockedup"
-                width="30"
-                height="30"
-                className="me-2"
+                width="34"
+                height="34"
+                className="me-2 rounded"
+                style={{ objectFit: 'contain' }}
               />{" "}
               Stockedup
             </h5>
