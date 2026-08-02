@@ -13,7 +13,11 @@ const ProductCard = ({ product }) => {
         <div
           className="product-img"
           style={{ backgroundImage: `url(${product.image})` }}
-        />
+        >
+          {product.discount > 0 && (
+            <span className="offer-badge">-{product.discount}%</span>
+          )}
+        </div>
       </Link>
       <div className="card-body d-flex flex-column">
         <Link
@@ -32,9 +36,16 @@ const ProductCard = ({ product }) => {
           <small className="text-muted">({product.numReviews})</small>
         </div>
         <div className="mt-auto d-flex justify-content-between align-items-center">
-          <span className="fs-5 fw-bold text-primary">
-            {formatINR(product.price)}
-          </span>
+          <div>
+            {product.discount > 0 && product.originalPrice > product.price && (
+              <small className="text-muted text-decoration-line-through me-2 d-block">
+                {formatINR(product.originalPrice)}
+              </small>
+            )}
+            <span className="fs-5 fw-bold text-primary">
+              {formatINR(product.price)}
+            </span>
+          </div>
         </div>
         {product.countInStock > 0 ? (
           <button

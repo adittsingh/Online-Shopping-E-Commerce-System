@@ -8,6 +8,8 @@ import { formatINR } from '../../utils/format';
 const emptyForm = {
   name: '',
   price: '',
+  originalPrice: '',
+  discount: '',
   category: '',
   description: '',
   countInStock: '',
@@ -57,6 +59,8 @@ const AdminProducts = () => {
     setForm({
       name: p.name,
       price: p.price,
+      originalPrice: p.originalPrice,
+      discount: p.discount,
       category: p.category?._id || p.category || '',
       description: p.description,
       countInStock: p.countInStock,
@@ -169,7 +173,12 @@ const AdminProducts = () => {
                     </td>
                     <td className="fw-bold">{p.name}</td>
                     <td>{p.category?.name || 'N/A'}</td>
-                    <td>{formatINR(p.price)}</td>
+                    <td>
+                      {formatINR(p.price)}
+                      {p.discount > 0 && (
+                        <span className="badge bg-danger ms-2">-{p.discount}%</span>
+                      )}
+                    </td>
                     <td>
                       <span className={`badge ${p.countInStock <= 5 ? 'bg-warning text-dark' : 'bg-success'}`}>
                         {p.countInStock}
@@ -237,6 +246,32 @@ const AdminProducts = () => {
                         value={form.price}
                         onChange={handleChange}
                         required
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Original Price / MRP (₹)</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        className="form-control"
+                        name="originalPrice"
+                        placeholder="Optional"
+                        value={form.originalPrice}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Discount (%)</label>
+                      <input
+                        type="number"
+                        min="0"
+                        max="90"
+                        className="form-control"
+                        name="discount"
+                        placeholder="e.g. 50"
+                        value={form.discount}
+                        onChange={handleChange}
                       />
                     </div>
                     <div className="col-md-6">

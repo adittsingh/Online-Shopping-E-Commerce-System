@@ -2,8 +2,12 @@ const asyncHandler = require('express-async-handler');
 const Order = require('../models/Order');
 const Product = require('../models/Product');
 
+const VOUCHER_CODE = 'INDEPENDENCE25';
+const VOUCHER_MIN_ITEMS = 25000;
+const VOUCHER_DISCOUNT = 10000;
+
 const addOrderItems = asyncHandler(async (req, res) => {
-  const { items, shippingAddress, paymentMethod } = req.body;
+  const { items, shippingAddress, paymentMethod, voucherCode } = req.body;
 
   if (!items || items.length === 0) {
     res.status(400);
@@ -48,10 +52,27 @@ const addOrderItems = asyncHandler(async (req, res) => {
     (acc, item) => acc + item.price * item.qty,
     0
   );
+
+  let discountAmount = 0;
+  if (voucherCode && String(voucherCode).trim() !== '') {
+    if (String(voucherCode).trim().toUpperCase() !== VOUCHER_CODE) {
+      res.status(400);
+      throw new Error('Invalid voucher code');
+    }
+    if (itemsPrice < VOUCHER_MIN_ITEMS) {
+      res.status(400);
+      throw new Error(
+        `This voucher requires a minimum cart value of ₹${VOUCHER_MIN_ITEMS.toLocaleString('en-IN')}`
+      );
+    }
+    discountAmount = VOUCHER_DISCOUNT;
+  }
+
+  const taxablePrice = itemsPrice - discountAmount;
   const shippingPrice = itemsPrice > 499 ? 0 : 49;
-  const taxPrice = Number((itemsPrice * 0.05).toFixed(2));
+  const taxPrice = Number((taxablePrice * 0.05).toFixed(2));
   const totalPrice = Number(
-    (itemsPrice + shippingPrice + taxPrice).toFixed(2)
+    (taxablePrice + shippingPrice + taxPrice).toFixed(2)
   );
 
   const order = await Order.create({
@@ -60,6 +81,8 @@ const addOrderItems = asyncHandler(async (req, res) => {
     shippingAddress,
     paymentMethod: paymentMethod || 'Cash on Delivery',
     itemsPrice,
+    voucherCode: discountAmount > 0 ? VOUCHER_CODE : '',
+    discountAmount,
     shippingPrice,
     taxPrice,
     totalPrice,

@@ -22,7 +22,11 @@ const getProducts = asyncHandler(async (req, res) => {
     priceFilter.price = { ...priceFilter.price, $lte: Number(req.query.maxPrice) };
   }
 
-  const query = { ...keyword, ...categoryFilter, ...priceFilter };
+  const offerFilter = req.query.offer === '1' || req.query.offer === 'true'
+    ? { discount: { $gt: 0 } }
+    : {};
+
+  const query = { ...keyword, ...categoryFilter, ...priceFilter, ...offerFilter };
 
   const sortOptions = {};
   if (req.query.sort) {
@@ -47,6 +51,14 @@ const getFeaturedProducts = asyncHandler(async (req, res) => {
   res.json(products);
 });
 
+const getOfferProducts = asyncHandler(async (req, res) => {
+  const products = await Product.find({ discount: { $gt: 0 } })
+    .sort({ discount: -1, createdAt: -1 })
+    .populate('category', 'name slug')
+    .limit(Number(req.query.limit) || 100);
+  res.json(products);
+});
+
 const getProductById = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id).populate(
     'category',
@@ -61,8 +73,17 @@ const getProductById = asyncHandler(async (req, res) => {
 });
 
 const createProduct = asyncHandler(async (req, res) => {
-  const { name, description, price, category, image, countInStock, featured } =
-    req.body;
+  const {
+    name,
+    description,
+    price,
+    originalPrice,
+    discount,
+    category,
+    image,
+    countInStock,
+    featured,
+  } = req.body;
 
   if (!name || !description || !price || !category || !image) {
     res.status(400);
@@ -74,6 +95,8 @@ const createProduct = asyncHandler(async (req, res) => {
     name,
     description,
     price: Number(price),
+    originalPrice: originalPrice !== undefined ? Number(originalPrice) : 0,
+    discount: discount !== undefined ? Number(discount) : 0,
     category,
     image,
     countInStock: Number(countInStock) || 0,
@@ -91,13 +114,26 @@ const updateProduct = asyncHandler(async (req, res) => {
     throw new Error('Product not found');
   }
 
-  const { name, description, price, category, image, countInStock, featured } =
-    req.body;
+  const {
+    name,
+    description,
+    price,
+    originalPrice,
+    discount,
+    category,
+    image,
+    countInStock,
+    featured,
+  } = req.body;
 
   product.name = name !== undefined ? name : product.name;
   product.description =
     description !== undefined ? description : product.description;
   product.price = price !== undefined ? Number(price) : product.price;
+  product.originalPrice =
+    originalPrice !== undefined ? Number(originalPrice) : product.originalPrice;
+  product.discount =
+    discount !== undefined ? Number(discount) : product.discount;
   product.category = category !== undefined ? category : product.category;
   product.image = image !== undefined ? image : product.image;
   product.countInStock =
@@ -164,6 +200,7 @@ const createProductReview = asyncHandler(async (req, res) => {
 module.exports = {
   getProducts,
   getFeaturedProducts,
+  getOfferProducts,
   getProductById,
   createProduct,
   updateProduct,

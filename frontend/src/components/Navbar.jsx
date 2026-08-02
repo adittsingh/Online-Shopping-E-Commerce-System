@@ -144,6 +144,9 @@ const Navbar = () => {
       <nav className="amz-sub">
         <div className="container-fluid d-flex align-items-center overflow-auto">
           <Link to="/" className="amz-sublink">All</Link>
+          <Link to="/offers" className="amz-sublink text-warning fw-bold">
+            Independence Day Sale
+          </Link>
           <Link to="/" className="amz-sublink">Best Sellers</Link>
           <Link to="/" className="amz-sublink">Today's Deals</Link>
           <Link to="/" className="amz-sublink">New Releases</Link>

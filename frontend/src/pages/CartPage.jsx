@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaTrash, FaArrowLeft } from 'react-icons/fa';
+import { FaTrash, FaArrowLeft, FaTicketAlt } from 'react-icons/fa';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { formatINR } from '../utils/format';
+import {
+  formatINR,
+  VOUCHER_CODE,
+  VOUCHER_MIN_ITEMS,
+  VOUCHER_DISCOUNT,
+} from '../utils/format';
 
 const CartPage = () => {
   const { cartItems, removeFromCart, updateQty } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [copied, setCopied] = useState(false);
 
   const handleCheckout = () => {
     navigate(user ? '/checkout' : '/login');
@@ -21,6 +27,17 @@ const CartPage = () => {
   const shippingPrice = itemsPrice > 499 ? 0 : itemsPrice > 0 ? 49 : 0;
   const taxPrice = Number((itemsPrice * 0.05).toFixed(2));
   const totalPrice = itemsPrice + shippingPrice + taxPrice;
+
+  const voucherEligible = itemsPrice >= VOUCHER_MIN_ITEMS;
+  const copyCode = async () => {
+    try {
+      await navigator.clipboard.writeText(VOUCHER_CODE);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  };
 
   return (
     <div className="container my-4">
@@ -40,7 +57,49 @@ const CartPage = () => {
           </Link>
         </div>
       ) : (
-        <div className="row g-4">
+        <>
+          <div
+            className={`voucher-strip p-3 rounded-3 d-flex flex-wrap align-items-center gap-3 mb-3 ${
+              voucherEligible ? '' : 'opacity-75'
+            }`}
+          >
+            <FaTicketAlt
+              size={30}
+              className={voucherEligible ? 'text-success' : 'text-muted'}
+            />
+            <div className="flex-grow-1">
+              {voucherEligible ? (
+                <>
+                  <div className="fw-bold text-success">
+                    Voucher unlocked! You save {formatINR(VOUCHER_DISCOUNT)} on
+                    this order
+                  </div>
+                  <div className="small text-muted">
+                    Apply code{' '}
+                    <span className="voucher-code">{VOUCHER_CODE}</span> at
+                    checkout
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="fw-bold">
+                    Independence Day Voucher
+                  </div>
+                  <div className="small text-muted">
+                    Add {formatINR(VOUCHER_MIN_ITEMS - itemsPrice)} more to
+                    unlock {formatINR(VOUCHER_DISCOUNT)} OFF with code{' '}
+                    <span className="voucher-code">{VOUCHER_CODE}</span>
+                  </div>
+                </>
+              )}
+            </div>
+            {voucherEligible && (
+              <button className="btn btn-success" onClick={copyCode}>
+                {copied ? 'Copied!' : `Copy Code`}
+              </button>
+            )}
+          </div>
+          <div className="row g-4">
           <div className="col-lg-8">
             {cartItems.map((item) => (
               <div
@@ -67,6 +126,11 @@ const CartPage = () => {
                     </Link>
                     <div className="text-muted small mt-1">
                       {formatINR(item.price)} each
+                      {item.originalPrice > item.price && (
+                        <span className="text-muted text-decoration-line-through ms-2">
+                          {formatINR(item.originalPrice)}
+                        </span>
+                      )}
                     </div>
                     <div className="d-flex align-items-center mt-2">
                       <select
@@ -138,7 +202,8 @@ const CartPage = () => {
               </div>
             </div>
           </div>
-        </div>
+          </div>
+        </>
       )}
     </div>
   );

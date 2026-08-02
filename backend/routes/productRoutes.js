@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   getProducts,
   getFeaturedProducts,
+  getOfferProducts,
   getProductById,
   createProduct,
   updateProduct,
@@ -17,6 +18,7 @@ router
   .post(protect, admin, createProduct);
 
 router.get('/featured', getFeaturedProducts);
+router.get('/offers', getOfferProducts);
 
 router
   .route('/:id')

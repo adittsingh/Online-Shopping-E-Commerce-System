@@ -168,6 +168,16 @@ const AdminOrders = () => {
                   </div>
                 ))}
                 <hr />
+                {detailOrder.discountAmount > 0 && (
+                  <div className="d-flex justify-content-between">
+                    <span>
+                      Voucher Discount ({detailOrder.voucherCode || 'code'})
+                    </span>
+                    <span className="fw-bold text-success">
+                      -{formatINR(detailOrder.discountAmount)}
+                    </span>
+                  </div>
+                )}
                 <div className="d-flex justify-content-between">
                   <span className="fw-bold">Total</span>
                   <span className="fw-bold text-primary">

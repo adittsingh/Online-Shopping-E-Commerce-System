@@ -92,7 +92,27 @@ const ProductPage = () => {
             </span>
           </div>
           <p className="text-muted">{product.description}</p>
-          <h3 className="text-primary fw-bold">{formatINR(product.price)}</h3>
+          <div className="d-flex align-items-center gap-2">
+            <h3 className="text-primary fw-bold mb-0">
+              {formatINR(product.price)}
+            </h3>
+            {product.discount > 0 && product.originalPrice > product.price && (
+              <>
+                <span className="fs-5 text-muted text-decoration-line-through">
+                  {formatINR(product.originalPrice)}
+                </span>
+                <span className="offer-badge position-static">
+                  -{product.discount}%
+                </span>
+              </>
+            )}
+          </div>
+          {product.discount > 0 && (
+            <p className="text-success mb-2 mt-2 fw-semibold">
+              Independence Day Deal: You save{' '}
+              {formatINR(product.originalPrice - product.price)}
+            </p>
+          )}
           <p className={product.countInStock > 0 ? 'text-success' : 'text-danger'}>
             {product.countInStock > 0
               ? `In Stock (${product.countInStock} available)`
@@ -106,6 +126,14 @@ const ProductPage = () => {
                 <span>Price:</span>
                 <strong>{formatINR(product.price)}</strong>
               </div>
+              {product.discount > 0 && product.originalPrice > product.price && (
+                <div className="d-flex justify-content-between mb-2">
+                  <span>MRP:</span>
+                  <strong className="text-muted text-decoration-line-through">
+                    {formatINR(product.originalPrice)}
+                  </strong>
+                </div>
+              )}
               <div className="d-flex justify-content-between mb-3">
                 <span>Status:</span>
                 <strong

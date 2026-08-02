@@ -5,6 +5,7 @@ import api from '../api';
 import ProductCard from '../components/ProductCard';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import { formatINR } from '../utils/format';
 
 const HomePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -103,6 +104,26 @@ const HomePage = () => {
           </p>
         </div>
       </section>
+
+      <div className="container my-4">
+        <Link
+          to="/offers"
+          className="text-decoration-none d-block"
+        >
+          <div className="voucher-strip p-3 rounded-3 d-flex flex-wrap align-items-center gap-3 shadow-sm">
+            <div className="flex-grow-1">
+              <div className="fw-bold text-dark fs-5">
+                Independence Day Sale — Up to 60% OFF on 100+ products
+              </div>
+              <div className="small text-muted">
+                Use code <span className="voucher-code">INDEPENDENCE25</span> at
+                checkout for {formatINR(10000)} OFF on orders above {formatINR(25000)}
+              </div>
+            </div>
+            <span className="btn btn-primary px-4">Shop Offers</span>
+          </div>
+        </Link>
+      </div>
 
       {featured.length > 0 && (
         <section className="container my-4">

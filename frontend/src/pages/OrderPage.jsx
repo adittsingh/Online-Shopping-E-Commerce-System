@@ -148,6 +148,22 @@ const OrderPage = () => {
                 <span>Items</span>
                 <strong>{formatINR(order.itemsPrice)}</strong>
               </div>
+              {order.discountAmount > 0 && (
+                <>
+                  <div className="d-flex justify-content-between mb-2">
+                    <span>Voucher Discount</span>
+                    <strong className="text-success">
+                      -{formatINR(order.discountAmount)}
+                    </strong>
+                  </div>
+                  <div className="d-flex justify-content-between mb-2">
+                    <span>Voucher Code</span>
+                    <strong className="voucher-code text-success">
+                      {order.voucherCode}
+                    </strong>
+                  </div>
+                </>
+              )}
               <div className="d-flex justify-content-between mb-2">
                 <span>Shipping</span>
                 <strong>

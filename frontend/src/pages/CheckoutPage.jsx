@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaArrowLeft } from 'react-icons/fa';
+import { FaArrowLeft, FaTicketAlt } from 'react-icons/fa';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { formatINR } from '../utils/format';
+import {
+  formatINR,
+  VOUCHER_CODE,
+  VOUCHER_MIN_ITEMS,
+  VOUCHER_DISCOUNT,
+} from '../utils/format';
 
 const CheckoutPage = () => {
   const { user } = useAuth();
@@ -15,19 +20,50 @@ const CheckoutPage = () => {
   const [postalCode, setPostalCode] = useState('');
   const [country, setCountry] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('Cash on Delivery');
+  const [voucherInput, setVoucherInput] = useState('');
+  const [voucherApplied, setVoucherApplied] = useState(0);
+  const [voucherError, setVoucherError] = useState('');
 
   const itemsPrice = cartItems.reduce(
     (acc, i) => acc + i.price * i.qty,
     0
   );
   const shippingPrice = itemsPrice > 499 ? 0 : itemsPrice > 0 ? 49 : 0;
-  const taxPrice = Number((itemsPrice * 0.05).toFixed(2));
-  const totalPrice = itemsPrice + shippingPrice + taxPrice;
+  const discountAmount = voucherApplied;
+  const taxablePrice = itemsPrice - discountAmount;
+  const taxPrice = Number((taxablePrice * 0.05).toFixed(2));
+  const totalPrice = taxablePrice + shippingPrice + taxPrice;
+
+  const applyVoucher = () => {
+    setVoucherError('');
+    const code = voucherInput.trim().toUpperCase();
+    if (!code) {
+      setVoucherError('Please enter a voucher code');
+      return;
+    }
+    if (code !== VOUCHER_CODE) {
+      setVoucherError('Invalid voucher code');
+      return;
+    }
+    if (itemsPrice < VOUCHER_MIN_ITEMS) {
+      setVoucherError(
+        `This voucher requires a minimum cart value of ${formatINR(VOUCHER_MIN_ITEMS)}`
+      );
+      return;
+    }
+    setVoucherApplied(VOUCHER_DISCOUNT);
+    setVoucherInput('');
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     navigate('/place-order', {
-      state: { shippingAddress: { address, city, postalCode, country }, paymentMethod },
+      state: {
+        shippingAddress: { address, city, postalCode, country },
+        paymentMethod,
+        voucherCode: discountAmount > 0 ? VOUCHER_CODE : '',
+        discountAmount,
+      },
     });
   };
 
@@ -53,6 +89,56 @@ const CheckoutPage = () => {
       <h2 className="fw-bold mb-4">Checkout</h2>
       <div className="row g-4">
         <div className="col-lg-8">
+          <div className="card shadow-sm mb-3">
+            <div className="card-header bg-white fw-bold">
+              <FaTicketAlt className="me-1 text-success" /> Voucher / Promo Code
+            </div>
+            <div className="card-body">
+              <div className="d-flex gap-2">
+                <input
+                  type="text"
+                  className="form-control text-uppercase"
+                  placeholder="Enter voucher code"
+                  value={voucherInput}
+                  onChange={(e) => setVoucherInput(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className="btn btn-success text-nowrap"
+                  onClick={applyVoucher}
+                  disabled={discountAmount > 0}
+                >
+                  {discountAmount > 0 ? 'Applied' : 'Apply'}
+                </button>
+              </div>
+              {voucherError && (
+                <div className="text-danger small mt-2">{voucherError}</div>
+              )}
+              {discountAmount > 0 && (
+                <div className="text-success small mt-2">
+                  {formatINR(VOUCHER_DISCOUNT)} discount applied with code{' '}
+                  <strong>{VOUCHER_CODE}</strong>!
+                </div>
+              )}
+              {discountAmount === 0 && (
+                <div className="text-muted small mt-2">
+                  {itemsPrice >= VOUCHER_MIN_ITEMS ? (
+                    <>
+                      You're eligible! Use code{' '}
+                      <strong>{VOUCHER_CODE}</strong> to get{' '}
+                      {formatINR(VOUCHER_DISCOUNT)} OFF
+                    </>
+                  ) : (
+                    <>
+                      Add {formatINR(VOUCHER_MIN_ITEMS - itemsPrice)} more to
+                      unlock {formatINR(VOUCHER_DISCOUNT)} OFF with code{' '}
+                      <strong>{VOUCHER_CODE}</strong>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
           <div className="card shadow-sm mb-3">
             <div className="card-header bg-white fw-bold">Shipping Address</div>
             <div className="card-body">
@@ -164,6 +250,14 @@ const CheckoutPage = () => {
                 <span>Items</span>
                 <strong>{formatINR(itemsPrice)}</strong>
               </div>
+              {discountAmount > 0 && (
+                <div className="d-flex justify-content-between mb-2">
+                  <span>Voucher Discount</span>
+                  <strong className="text-success">
+                    -{formatINR(discountAmount)}
+                  </strong>
+                </div>
+              )}
               <div className="d-flex justify-content-between mb-2">
                 <span>Shipping</span>
                 <strong>

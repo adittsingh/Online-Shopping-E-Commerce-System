@@ -47,6 +47,17 @@ const productSchema = mongoose.Schema(
       default: 0,
       min: 0,
     },
+    originalPrice: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    discount: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 90,
+    },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,

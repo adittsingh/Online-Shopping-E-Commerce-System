@@ -14,12 +14,15 @@ const PlaceOrderPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const { shippingAddress, paymentMethod } = location.state || {};
+  const { shippingAddress, paymentMethod, voucherCode, discountAmount } =
+    location.state || {};
 
   const itemsPrice = cartItems.reduce((acc, i) => acc + i.price * i.qty, 0);
   const shippingPrice = itemsPrice > 499 ? 0 : itemsPrice > 0 ? 49 : 0;
-  const taxPrice = Number((itemsPrice * 0.05).toFixed(2));
-  const totalPrice = itemsPrice + shippingPrice + taxPrice;
+  const appliedDiscount = discountAmount || 0;
+  const taxablePrice = itemsPrice - appliedDiscount;
+  const taxPrice = Number((taxablePrice * 0.05).toFixed(2));
+  const totalPrice = taxablePrice + shippingPrice + taxPrice;
 
   const placeOrder = async () => {
     setError('');
@@ -29,6 +32,7 @@ const PlaceOrderPage = () => {
         items: cartItems,
         shippingAddress,
         paymentMethod,
+        voucherCode: appliedDiscount > 0 ? voucherCode : '',
       });
       clearCart();
       navigate(`/order/${data._id}`);
@@ -112,6 +116,22 @@ const PlaceOrderPage = () => {
                 <span>Items</span>
                 <strong>{formatINR(itemsPrice)}</strong>
               </div>
+              {appliedDiscount > 0 && (
+                <>
+                  <div className="d-flex justify-content-between mb-2">
+                    <span>Voucher Discount</span>
+                    <strong className="text-success">
+                      -{formatINR(appliedDiscount)}
+                    </strong>
+                  </div>
+                  <div className="d-flex justify-content-between mb-2">
+                    <span>Voucher Code</span>
+                    <strong className="voucher-code text-success">
+                      {voucherCode}
+                    </strong>
+                  </div>
+                </>
+              )}
               <div className="d-flex justify-content-between mb-2">
                 <span>Shipping</span>
                 <strong>

@@ -254,6 +254,47 @@ body {
   background-size: cover;
   background-position: center;
   background-color: #fff;
+  position: relative;
+}
+
+.offer-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: linear-gradient(135deg, #e53935, #d32f2f);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.offer-hero {
+  background: linear-gradient(
+    90deg,
+    #ff9933 0%,
+    #ffffff 50%,
+    #138808 100%
+  );
+  color: #0f1111;
+  border-bottom: 3px solid #d32f2f;
+}
+
+.offer-hero h1 {
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.voucher-strip {
+  border: 1.5px dashed #138808;
+  background: #f0fff0;
+}
+
+.voucher-code {
+  font-family: monospace;
+  font-weight: 700;
+  letter-spacing: 2px;
 }
 
 .product-card .btn-primary {
