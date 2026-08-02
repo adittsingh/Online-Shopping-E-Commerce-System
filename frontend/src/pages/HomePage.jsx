@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FaSearch } from 'react-icons/fa';
+import { Link, useSearchParams } from 'react-router-dom';
+import { FaSearch, FaTruck, FaLock, FaHeadset } from 'react-icons/fa';
 import api from '../api';
 import ProductCard from '../components/ProductCard';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 
 const HomePage = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [featured, setFeatured] = useState([]);
@@ -20,38 +21,63 @@ const HomePage = () => {
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
 
-  const fetchProducts = async (overrides = {}) => {
-    try {
-      setLoading(true);
-      const params = new URLSearchParams();
-      if (keyword) params.set('keyword', keyword);
-      if (selectedCategory) params.set('category', selectedCategory);
-      if (minPrice) params.set('minPrice', minPrice);
-      if (maxPrice) params.set('maxPrice', maxPrice);
-      if (sort) params.set('sort', sort);
-      params.set('pageNumber', overrides.page || page);
-      const { data } = await api.get(`/products?${params.toString()}`);
-      setProducts(data.products);
-      setPages(data.pages);
-      setPage(data.page);
-      setError('');
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
     api.get('/categories').then(({ data }) => setCategories(data)).catch(() => {});
     api.get('/products/featured').then(({ data }) => setFeatured(data)).catch(() => {});
-    fetchProducts();
   }, []);
+
+  useEffect(() => {
+    const kw = searchParams.get('keyword');
+    if (kw !== null && kw !== keyword) {
+      setKeyword(kw);
+      setPage(1);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    let active = true;
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const params = new URLSearchParams();
+        if (keyword) params.set('keyword', keyword);
+        if (selectedCategory) params.set('category', selectedCategory);
+        if (minPrice) params.set('minPrice', minPrice);
+        if (maxPrice) params.set('maxPrice', maxPrice);
+        if (sort) params.set('sort', sort);
+        params.set('pageNumber', page);
+        const { data } = await api.get(`/products?${params.toString()}`);
+        if (!active) return;
+        setProducts(data.products);
+        setPages(data.pages);
+        setPage(data.page);
+        setError('');
+      } catch (err) {
+        if (active) setError(err.message);
+      } finally {
+        if (active) setLoading(false);
+      }
+    };
+    fetchProducts();
+    return () => {
+      active = false;
+    };
+  }, [keyword, selectedCategory, minPrice, maxPrice, sort, page]);
 
   const handleSearch = (e) => {
     e.preventDefault();
     setPage(1);
-    fetchProducts({ page: 1 });
+    setSearchParams(keyword ? { keyword } : {});
+  };
+
+  const handleCategory = (id) => {
+    setSelectedCategory(id);
+    setPage(1);
+  };
+
+  const handleSort = (value) => {
+    setSort(value);
+    setPage(1);
   };
 
   const resetFilters = () => {
@@ -61,14 +87,16 @@ const HomePage = () => {
     setMaxPrice('');
     setSort('');
     setPage(1);
-    fetchProducts({ page: 1 });
+    setSearchParams({});
   };
 
   return (
     <div>
       <section className="hero-section text-white text-center py-5">
         <div className="container">
-          <h1 className="display-4 fw-bold">Welcome to Stockedup</h1>
+          <h1 className="display-4 fw-bold">
+            Welcome to <span style={{ color: '#febd69' }}>Stockedup</span>
+          </h1>
           <p className="lead">
             Discover amazing products at unbeatable prices. Shop the latest
             electronics, fashion, home essentials and more.
@@ -78,8 +106,8 @@ const HomePage = () => {
 
       {featured.length > 0 && (
         <section className="container my-4">
-          <h4 className="fw-bold mb-3">
-            <span className="text-primary">Featured Products</span>
+          <h4 className="section-title mb-3">
+            <span style={{ color: '#febd69' }}>Featured</span> Products
           </h4>
           <div className="row">
             {featured.map((p) => (
@@ -93,9 +121,12 @@ const HomePage = () => {
 
       <section className="container mt-4">
         <div className="bg-white p-4 rounded-3 shadow-sm mb-4">
-          <form onSubmit={handleSearch} className="d-flex flex-column flex-md-row gap-2 mb-3">
+          <form
+            onSubmit={handleSearch}
+            className="d-flex flex-column flex-md-row gap-2 mb-3"
+          >
             <div className="input-group flex-grow-1">
-              <span className="input-group-text">
+              <span className="input-group-text bg-white">
                 <FaSearch />
               </span>
               <input
@@ -115,11 +146,7 @@ const HomePage = () => {
               <select
                 className="form-select"
                 value={selectedCategory}
-                onChange={(e) => {
-                  setSelectedCategory(e.target.value);
-                  setPage(1);
-                  fetchProducts({ page: 1 });
-                }}
+                onChange={(e) => handleCategory(e.target.value)}
               >
                 <option value="">All Categories</option>
                 {categories.map((c) => (
@@ -151,11 +178,7 @@ const HomePage = () => {
               <select
                 className="form-select"
                 value={sort}
-                onChange={(e) => {
-                  setSort(e.target.value);
-                  setPage(1);
-                  fetchProducts({ page: 1 });
-                }}
+                onChange={(e) => handleSort(e.target.value)}
               >
                 <option value="">Sort By</option>
                 <option value="price:asc">Price: Low to High</option>
@@ -196,7 +219,7 @@ const HomePage = () => {
                   <li className={`page-item ${page === 1 ? 'disabled' : ''}`}>
                     <button
                       className="page-link"
-                      onClick={() => fetchProducts({ page: page - 1 })}
+                      onClick={() => setPage(page - 1)}
                     >
                       Prev
                     </button>
@@ -208,7 +231,7 @@ const HomePage = () => {
                     >
                       <button
                         className="page-link"
-                        onClick={() => fetchProducts({ page: n + 1 })}
+                        onClick={() => setPage(n + 1)}
                       >
                         {n + 1}
                       </button>
@@ -219,7 +242,7 @@ const HomePage = () => {
                   >
                     <button
                       className="page-link"
-                      onClick={() => fetchProducts({ page: page + 1 })}
+                      onClick={() => setPage(page + 1)}
                     >
                       Next
                     </button>
@@ -231,23 +254,29 @@ const HomePage = () => {
         )}
       </section>
 
-      <section className="container mt-4">
+      <section className="container my-4">
+        <h4 className="section-title mb-3">
+          <span style={{ color: '#febd69' }}>Why Shop</span> With Us
+        </h4>
         <div className="row text-center g-4">
           <div className="col-md-4">
-            <div className="p-4 bg-light rounded-3">
-              <h4 className="fw-bold text-primary">Free Shipping</h4>
+            <div className="p-4 bg-white rounded-3 shadow-sm h-100">
+              <FaTruck size={40} style={{ color: '#febd69' }} className="mb-3" />
+              <h5 className="fw-bold">Free Shipping</h5>
               <p className="text-muted mb-0">On all orders above $500</p>
             </div>
           </div>
           <div className="col-md-4">
-            <div className="p-4 bg-light rounded-3">
-              <h4 className="fw-bold text-primary">Secure Payments</h4>
+            <div className="p-4 bg-white rounded-3 shadow-sm h-100">
+              <FaLock size={40} style={{ color: '#febd69' }} className="mb-3" />
+              <h5 className="fw-bold">Secure Payments</h5>
               <p className="text-muted mb-0">100% safe &amp; secure checkout</p>
             </div>
           </div>
           <div className="col-md-4">
-            <div className="p-4 bg-light rounded-3">
-              <h4 className="fw-bold text-primary">24/7 Support</h4>
+            <div className="p-4 bg-white rounded-3 shadow-sm h-100">
+              <FaHeadset size={40} style={{ color: '#febd69' }} className="mb-3" />
+              <h5 className="fw-bold">24/7 Support</h5>
               <p className="text-muted mb-0">
                 Need help? <Link to="/contact">Contact us</Link>
               </p>

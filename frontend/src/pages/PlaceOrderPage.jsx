@@ -127,7 +127,7 @@ const PlaceOrderPage = () => {
                 <span className="text-primary">${totalPrice.toFixed(2)}</span>
               </div>
               <button
-                className="btn btn-success w-100"
+                className="btn btn-primary w-100"
                 onClick={placeOrder}
                 disabled={loading}
               >

@@ -1,71 +1,88 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaGithub, FaEnvelope, FaPhone } from 'react-icons/fa';
+import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from 'react-icons/fa';
 
 const Footer = () => {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <footer className="bg-dark text-white pt-4 mt-5">
-      <div className="container">
-        <div className="row g-4">
-          <div className="col-md-4">
-            <h5 className="fw-bold d-flex align-items-center">
+    <>
+      <button className="amz-backtotop" onClick={scrollToTop}>
+        Back to top
+      </button>
+      <footer className="amz-footer pt-5">
+        <div className="container">
+          <div className="row g-4 pb-5">
+            <div className="col-6 col-md-3">
+              <h6>Get to Know Us</h6>
+              <Link to="/">About Us</Link>
+              <Link to="/">Careers</Link>
+              <Link to="/contact">Contact Us</Link>
+              <Link to="/">Press Releases</Link>
+            </div>
+            <div className="col-6 col-md-3">
+              <h6>Make Money with Us</h6>
+              <Link to="/">Sell on Stockedup</Link>
+              <Link to="/">Become a Seller</Link>
+              <Link to="/">Advertise Your Products</Link>
+              <Link to="/">Become an Affiliate</Link>
+            </div>
+            <div className="col-6 col-md-3">
+              <h6>Let Us Help You</h6>
+              <Link to="/cart">Your Cart</Link>
+              <Link to="/orders">Your Orders</Link>
+              <Link to="/profile">Your Account</Link>
+              <Link to="/contact">Help Center</Link>
+            </div>
+            <div className="col-6 col-md-3">
+              <h6>Follow Us</h6>
+              <Link to="/">
+                <FaFacebookF className="me-2" /> Facebook
+              </Link>
+              <Link to="/">
+                <FaTwitter className="me-2" /> Twitter
+              </Link>
+              <Link to="/">
+                <FaInstagram className="me-2" /> Instagram
+              </Link>
+              <Link to="/">
+                <FaYoutube className="me-2" /> YouTube
+              </Link>
+            </div>
+          </div>
+        </div>
+        <div className="amz-footer-bottom">
+          <div className="container text-center py-3">
+            <div className="d-flex justify-content-center align-items-center mb-2">
               <img
                 src="/logo.png"
                 alt="Stockedup"
-                width="34"
-                height="34"
+                width="28"
+                height="28"
                 className="me-2 rounded"
                 style={{ objectFit: 'contain' }}
-              />{" "}
-              Stockedup
-            </h5>
-            <p className="text-white-50 small">
-              Your one-stop online shopping destination. Quality products at the
-              best prices, delivered to your door.
-            </p>
-          </div>
-          <div className="col-md-4">
-            <h5>Quick Links</h5>
-            <ul className="list-unstyled">
-              <li>
-                <Link to="/" className="text-white-50 text-decoration-none">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/cart" className="text-white-50 text-decoration-none">
-                  Cart
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="text-white-50 text-decoration-none">
-                  Contact Us
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div className="col-md-4">
-            <h5>Contact</h5>
-            <ul className="list-unstyled small text-white-50">
-              <li>
-                <FaEnvelope className="me-2" /> support@stockedup.com
-              </li>
-              <li>
-                <FaPhone className="me-2" /> +91 98765 43210
-              </li>
-              <li>
-                <FaGithub className="me-2" /> Online-Shopping-E-Commerce-System
-              </li>
-            </ul>
+              />
+              <span className="fw-bold" style={{ fontSize: 14 }}>
+                stockedup
+              </span>
+            </div>
+            <div>
+              &copy; {new Date().getFullYear()} Stockedup. All rights reserved.
+              <span className="mx-2">|</span>
+              <Link to="/" className="text-decoration-none text-white-50">
+                Conditions of Use
+              </Link>
+              <span className="mx-2">|</span>
+              <Link to="/" className="text-decoration-none text-white-50">
+                Privacy Notice
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="text-center py-3 border-top border-secondary mt-4">
-        <small className="text-white-50">
-          &copy; {new Date().getFullYear()} Stockedup. All rights reserved.
-        </small>
-      </div>
-    </footer>
+      </footer>
+    </>
   );
 };
 
