@@ -48,7 +48,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
     (acc, item) => acc + item.price * item.qty,
     0
   );
-  const shippingPrice = itemsPrice > 500 ? 0 : 50;
+  const shippingPrice = itemsPrice > 499 ? 0 : 49;
   const taxPrice = Number((itemsPrice * 0.05).toFixed(2));
   const totalPrice = Number(
     (itemsPrice + shippingPrice + taxPrice).toFixed(2)

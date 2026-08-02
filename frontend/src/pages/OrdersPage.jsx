@@ -4,6 +4,7 @@ import { FaBoxOpen } from 'react-icons/fa';
 import api from '../api';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import { formatINR } from '../utils/format';
 
 const statusBadge = {
   Pending: 'secondary',
@@ -71,7 +72,7 @@ const OrdersPage = () => {
                     </td>
                     <td>{new Date(o.createdAt).toLocaleDateString()}</td>
                     <td>{o.items.reduce((a, i) => a + i.qty, 0)}</td>
-                    <td className="fw-bold">${o.totalPrice.toFixed(2)}</td>
+                    <td className="fw-bold">{formatINR(o.totalPrice)}</td>
                     <td>
                       <span className={`badge bg-${statusBadge[o.status]}`}>
                         {o.status}

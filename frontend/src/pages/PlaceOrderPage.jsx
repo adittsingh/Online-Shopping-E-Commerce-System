@@ -5,6 +5,7 @@ import api from '../api';
 import { useCart } from '../context/CartContext';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import { formatINR } from '../utils/format';
 
 const PlaceOrderPage = () => {
   const location = useLocation();
@@ -16,7 +17,7 @@ const PlaceOrderPage = () => {
   const { shippingAddress, paymentMethod } = location.state || {};
 
   const itemsPrice = cartItems.reduce((acc, i) => acc + i.price * i.qty, 0);
-  const shippingPrice = itemsPrice > 500 ? 0 : itemsPrice > 0 ? 50 : 0;
+  const shippingPrice = itemsPrice > 499 ? 0 : itemsPrice > 0 ? 49 : 0;
   const taxPrice = Number((itemsPrice * 0.05).toFixed(2));
   const totalPrice = itemsPrice + shippingPrice + taxPrice;
 
@@ -94,10 +95,10 @@ const PlaceOrderPage = () => {
                       {item.name}
                     </Link>
                     <div className="small text-muted">
-                      ${item.price.toFixed(2)} x {item.qty}
+                      {formatINR(item.price)} x {item.qty}
                     </div>
                   </div>
-                  <strong>${(item.price * item.qty).toFixed(2)}</strong>
+                  <strong>{formatINR(item.price * item.qty)}</strong>
                 </div>
               ))}
             </div>
@@ -109,22 +110,22 @@ const PlaceOrderPage = () => {
             <div className="card-body">
               <div className="d-flex justify-content-between mb-2">
                 <span>Items</span>
-                <strong>${itemsPrice.toFixed(2)}</strong>
+                <strong>{formatINR(itemsPrice)}</strong>
               </div>
               <div className="d-flex justify-content-between mb-2">
                 <span>Shipping</span>
                 <strong>
-                  {shippingPrice === 0 ? 'Free' : `$${shippingPrice.toFixed(2)}`}
+                  {shippingPrice === 0 ? 'Free' : formatINR(shippingPrice)}
                 </strong>
               </div>
               <div className="d-flex justify-content-between mb-2">
                 <span>Tax (5%)</span>
-                <strong>${taxPrice.toFixed(2)}</strong>
+                <strong>{formatINR(taxPrice)}</strong>
               </div>
               <hr />
               <div className="d-flex justify-content-between fw-bold fs-5 mb-3">
                 <span>Total</span>
-                <span className="text-primary">${totalPrice.toFixed(2)}</span>
+                <span className="text-primary">{formatINR(totalPrice)}</span>
               </div>
               <button
                 className="btn btn-primary w-100"

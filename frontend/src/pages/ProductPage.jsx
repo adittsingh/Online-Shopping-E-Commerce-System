@@ -6,6 +6,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { formatINR } from '../utils/format';
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -91,7 +92,7 @@ const ProductPage = () => {
             </span>
           </div>
           <p className="text-muted">{product.description}</p>
-          <h3 className="text-primary fw-bold">${product.price.toFixed(2)}</h3>
+          <h3 className="text-primary fw-bold">{formatINR(product.price)}</h3>
           <p className={product.countInStock > 0 ? 'text-success' : 'text-danger'}>
             {product.countInStock > 0
               ? `In Stock (${product.countInStock} available)`
@@ -103,7 +104,7 @@ const ProductPage = () => {
             <div className="card-body">
               <div className="d-flex justify-content-between mb-2">
                 <span>Price:</span>
-                <strong>${product.price.toFixed(2)}</strong>
+                <strong>{formatINR(product.price)}</strong>
               </div>
               <div className="d-flex justify-content-between mb-3">
                 <span>Status:</span>

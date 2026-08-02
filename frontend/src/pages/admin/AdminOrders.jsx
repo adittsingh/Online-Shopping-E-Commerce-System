@@ -4,6 +4,7 @@ import { FaEye } from 'react-icons/fa';
 import api from '../../api';
 import Loader from '../../components/Loader';
 import Message from '../../components/Message';
+import { formatINR } from '../../utils/format';
 
 const statusBadge = {
   Pending: 'secondary',
@@ -93,7 +94,7 @@ const AdminOrders = () => {
                     <td className="fw-bold">#{o._id.slice(-8).toUpperCase()}</td>
                     <td>{o.user?.name || 'N/A'}</td>
                     <td>{new Date(o.createdAt).toLocaleDateString()}</td>
-                    <td className="fw-bold">${o.totalPrice.toFixed(2)}</td>
+                    <td className="fw-bold">{formatINR(o.totalPrice)}</td>
                     <td>
                       {o.isPaid ? (
                         <span className="badge bg-success">Paid</span>
@@ -163,14 +164,14 @@ const AdminOrders = () => {
                     <span>
                       {item.name} x {item.qty}
                     </span>
-                    <strong>${(item.price * item.qty).toFixed(2)}</strong>
+                    <strong>{formatINR(item.price * item.qty)}</strong>
                   </div>
                 ))}
                 <hr />
                 <div className="d-flex justify-content-between">
                   <span className="fw-bold">Total</span>
                   <span className="fw-bold text-primary">
-                    ${detailOrder.totalPrice.toFixed(2)}
+                    {formatINR(detailOrder.totalPrice)}
                   </span>
                 </div>
                 <hr />

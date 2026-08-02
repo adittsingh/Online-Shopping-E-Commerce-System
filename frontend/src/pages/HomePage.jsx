@@ -160,7 +160,7 @@ const HomePage = () => {
               <input
                 type="number"
                 className="form-control"
-                placeholder="Min $"
+                placeholder="Min ₹"
                 value={minPrice}
                 onChange={(e) => setMinPrice(e.target.value)}
               />
@@ -169,7 +169,7 @@ const HomePage = () => {
               <input
                 type="number"
                 className="form-control"
-                placeholder="Max $"
+                placeholder="Max ₹"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(e.target.value)}
               />
@@ -263,7 +263,7 @@ const HomePage = () => {
             <div className="p-4 bg-white rounded-3 shadow-sm h-100">
               <FaTruck size={40} style={{ color: '#febd69' }} className="mb-3" />
               <h5 className="fw-bold">Free Shipping</h5>
-              <p className="text-muted mb-0">On all orders above $500</p>
+              <p className="text-muted mb-0">On all orders above ₹499</p>
             </div>
           </div>
           <div className="col-md-4">

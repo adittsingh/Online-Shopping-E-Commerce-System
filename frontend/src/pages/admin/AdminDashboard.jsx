@@ -10,6 +10,7 @@ import {
 } from 'react-icons/fa';
 import api from '../../api';
 import Loader from '../../components/Loader';
+import { formatINR } from '../../utils/format';
 import Message from '../../components/Message';
 
 const AdminDashboard = () => {
@@ -36,7 +37,7 @@ const AdminDashboard = () => {
     { label: 'Total Products', value: stats.totalProducts, icon: <FaBoxOpen />, color: 'info' },
     { label: 'Categories', value: stats.totalCategories, icon: <FaTags />, color: 'warning' },
     { label: 'Total Orders', value: stats.totalOrders, icon: <FaClipboardList />, color: 'secondary' },
-    { label: 'Revenue', value: `$${Number(stats.totalRevenue).toFixed(2)}`, icon: <FaDollarSign />, color: 'success' },
+    { label: 'Revenue', value: formatINR(stats.totalRevenue), icon: <FaDollarSign />, color: 'success' },
   ];
 
   return (
@@ -84,7 +85,7 @@ const AdminDashboard = () => {
                       <tr key={o._id}>
                         <td>#{o._id.slice(-6).toUpperCase()}</td>
                         <td>{o.user?.name || 'N/A'}</td>
-                        <td>${o.totalPrice.toFixed(2)}</td>
+                        <td>{formatINR(o.totalPrice)}</td>
                         <td>
                           <span className={`badge bg-${o.isDelivered ? 'success' : o.isPaid ? 'info' : 'secondary'}`}>
                             {o.status}
@@ -115,7 +116,7 @@ const AdminDashboard = () => {
                   >
                     <div>
                       <div className="fw-bold">{p.name}</div>
-                      <small className="text-muted">${p.price.toFixed(2)}</small>
+                      <small className="text-muted">{formatINR(p.price)}</small>
                     </div>
                     <span
                       className={`badge ${p.countInStock === 0 ? 'bg-danger' : 'bg-warning text-dark'}`}

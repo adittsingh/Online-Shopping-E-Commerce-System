@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useCart } from '../context/CartContext';
+import { formatINR } from '../utils/format';
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
@@ -32,7 +33,7 @@ const ProductCard = ({ product }) => {
         </div>
         <div className="mt-auto d-flex justify-content-between align-items-center">
           <span className="fs-5 fw-bold text-primary">
-            ${product.price.toFixed(2)}
+            {formatINR(product.price)}
           </span>
         </div>
         {product.countInStock > 0 ? (

@@ -3,6 +3,7 @@ import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import api from '../../api';
 import Loader from '../../components/Loader';
 import Message from '../../components/Message';
+import { formatINR } from '../../utils/format';
 
 const emptyForm = {
   name: '',
@@ -168,7 +169,7 @@ const AdminProducts = () => {
                     </td>
                     <td className="fw-bold">{p.name}</td>
                     <td>{p.category?.name || 'N/A'}</td>
-                    <td>${p.price.toFixed(2)}</td>
+                    <td>{formatINR(p.price)}</td>
                     <td>
                       <span className={`badge ${p.countInStock <= 5 ? 'bg-warning text-dark' : 'bg-success'}`}>
                         {p.countInStock}
@@ -226,7 +227,7 @@ const AdminProducts = () => {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Price ($) *</label>
+                      <label className="form-label">Price (₹) *</label>
                       <input
                         type="number"
                         step="0.01"

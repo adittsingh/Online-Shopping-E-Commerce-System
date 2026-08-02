@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { formatINR } from '../utils/format';
 
 const CheckoutPage = () => {
   const { user } = useAuth();
@@ -19,7 +20,7 @@ const CheckoutPage = () => {
     (acc, i) => acc + i.price * i.qty,
     0
   );
-  const shippingPrice = itemsPrice > 500 ? 0 : itemsPrice > 0 ? 50 : 0;
+  const shippingPrice = itemsPrice > 499 ? 0 : itemsPrice > 0 ? 49 : 0;
   const taxPrice = Number((itemsPrice * 0.05).toFixed(2));
   const totalPrice = itemsPrice + shippingPrice + taxPrice;
 
@@ -155,28 +156,28 @@ const CheckoutPage = () => {
                   <span className="text-truncate me-2">
                     {item.name} x {item.qty}
                   </span>
-                  <strong>${(item.price * item.qty).toFixed(2)}</strong>
+                  <strong>{formatINR(item.price * item.qty)}</strong>
                 </div>
               ))}
               <hr />
               <div className="d-flex justify-content-between mb-2">
                 <span>Items</span>
-                <strong>${itemsPrice.toFixed(2)}</strong>
+                <strong>{formatINR(itemsPrice)}</strong>
               </div>
               <div className="d-flex justify-content-between mb-2">
                 <span>Shipping</span>
                 <strong>
-                  {shippingPrice === 0 ? 'Free' : `$${shippingPrice.toFixed(2)}`}
+                  {shippingPrice === 0 ? 'Free' : formatINR(shippingPrice)}
                 </strong>
               </div>
               <div className="d-flex justify-content-between mb-2">
                 <span>Tax (5%)</span>
-                <strong>${taxPrice.toFixed(2)}</strong>
+                <strong>{formatINR(taxPrice)}</strong>
               </div>
               <hr />
               <div className="d-flex justify-content-between fw-bold fs-5">
                 <span>Total</span>
-                <span className="text-primary">${totalPrice.toFixed(2)}</span>
+                <span className="text-primary">{formatINR(totalPrice)}</span>
               </div>
             </div>
           </div>

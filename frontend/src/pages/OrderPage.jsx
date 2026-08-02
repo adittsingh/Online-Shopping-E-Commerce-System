@@ -4,6 +4,7 @@ import { FaCheckCircle, FaTimesCircle, FaTruck } from 'react-icons/fa';
 import api from '../api';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import { formatINR } from '../utils/format';
 
 const statusBadge = {
   Pending: 'secondary',
@@ -130,10 +131,10 @@ const OrderPage = () => {
                       {item.name}
                     </Link>
                     <div className="small text-muted">
-                      ${item.price.toFixed(2)} x {item.qty}
+                      {formatINR(item.price)} x {item.qty}
                     </div>
                   </div>
-                  <strong>${(item.price * item.qty).toFixed(2)}</strong>
+                  <strong>{formatINR(item.price * item.qty)}</strong>
                 </div>
               ))}
             </div>
@@ -145,25 +146,25 @@ const OrderPage = () => {
             <div className="card-body">
               <div className="d-flex justify-content-between mb-2">
                 <span>Items</span>
-                <strong>${order.itemsPrice.toFixed(2)}</strong>
+                <strong>{formatINR(order.itemsPrice)}</strong>
               </div>
               <div className="d-flex justify-content-between mb-2">
                 <span>Shipping</span>
                 <strong>
                   {order.shippingPrice === 0
                     ? 'Free'
-                    : `$${order.shippingPrice.toFixed(2)}`}
+                    : formatINR(order.shippingPrice)}
                 </strong>
               </div>
               <div className="d-flex justify-content-between mb-2">
                 <span>Tax</span>
-                <strong>${order.taxPrice.toFixed(2)}</strong>
+                <strong>{formatINR(order.taxPrice)}</strong>
               </div>
               <hr />
               <div className="d-flex justify-content-between fw-bold fs-5">
                 <span>Total</span>
                 <span className="text-primary">
-                  ${order.totalPrice.toFixed(2)}
+                  {formatINR(order.totalPrice)}
                 </span>
               </div>
               <Link to="/orders" className="btn btn-outline-secondary w-100 mt-3">

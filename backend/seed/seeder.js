@@ -1,4 +1,4 @@
-const dotenv = require('dotenv');
+﻿const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs');
 dotenv.config();
 
@@ -69,7 +69,7 @@ const categories = [
 const products = [
   {
     name: 'Wireless Bluetooth Headphones',
-    price: 49.99,
+    price: 4149,
     description:
       'Premium over-ear wireless headphones with active noise cancellation, 30-hour battery life and deep bass sound.',
     countInStock: 25,
@@ -77,7 +77,7 @@ const products = [
   },
   {
     name: 'Smartphone 5G 128GB',
-    price: 399.99,
+    price: 33999,
     description:
       '6.5 inch AMOLED display smartphone with 128GB storage, 8GB RAM and a powerful 48MP triple camera system.',
     countInStock: 12,
@@ -85,7 +85,7 @@ const products = [
   },
   {
     name: 'Laptop 15.6 inch - 16GB RAM',
-    price: 899.99,
+    price: 74999,
     description:
       'Lightweight laptop with Intel Core i7 processor, 16GB RAM, 512GB SSD and a full HD anti-glare display.',
     countInStock: 8,
@@ -93,7 +93,7 @@ const products = [
   },
   {
     name: 'Smart Watch Series',
-    price: 129.99,
+    price: 10999,
     description:
       'Fitness smart watch with heart-rate monitor, GPS, sleep tracking and 7-day battery life.',
     countInStock: 30,
@@ -101,7 +101,7 @@ const products = [
   },
   {
     name: 'Men Casual Cotton T-Shirt',
-    price: 19.99,
+    price: 1699,
     description:
       'Comfortable 100% cotton crew neck t-shirt, available in multiple colors. Machine washable.',
     countInStock: 100,
@@ -109,7 +109,7 @@ const products = [
   },
   {
     name: 'Sneakers Running Shoes',
-    price: 69.99,
+    price: 5999,
     description:
       'Lightweight breathable running sneakers with cushioned sole for everyday comfort.',
     countInStock: 45,
@@ -117,7 +117,7 @@ const products = [
   },
   {
     name: 'Denim Jacket',
-    price: 59.99,
+    price: 4999,
     description:
       'Classic denim jacket with button closure and multiple pockets. Durable and stylish.',
     countInStock: 20,
@@ -125,7 +125,7 @@ const products = [
   },
   {
     name: 'Non-Stick Cookware Set',
-    price: 89.99,
+    price: 7499,
     description:
       '10-piece non-stick cookware set with pots, pans and lids. Heat-resistant handles and dishwasher safe.',
     countInStock: 15,
@@ -133,7 +133,7 @@ const products = [
   },
   {
     name: 'Coffee Maker Machine',
-    price: 149.99,
+    price: 12499,
     description:
       'Automatic drip coffee maker with programmable timer, 12-cup capacity and reusable filter.',
     countInStock: 10,
@@ -141,7 +141,7 @@ const products = [
   },
   {
     name: 'Yoga Mat Premium',
-    price: 24.99,
+    price: 2099,
     description:
       'Extra thick non-slip yoga mat with carrying strap. Perfect for yoga, pilates and workouts.',
     countInStock: 60,
@@ -149,7 +149,7 @@ const products = [
   },
   {
     name: 'Dumbbell Set 20kg',
-    price: 79.99,
+    price: 6499,
     description:
       'Adjustable dumbbell set with 8 weight plates and connectors. Great for home workouts.',
     countInStock: 18,
@@ -157,7 +157,7 @@ const products = [
   },
   {
     name: 'Skincare Vitamin C Serum',
-    price: 29.99,
+    price: 2499,
     description:
       'Vitamin C facial serum for brightening and anti-aging. Dermatologist tested, suitable for all skin types.',
     countInStock: 40,
@@ -264,3 +264,4 @@ if (process.argv[2] === '-d') {
 } else {
   importData();
 }
+
