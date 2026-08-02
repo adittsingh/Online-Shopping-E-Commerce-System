@@ -10,6 +10,9 @@ build/
 .env.local
 .env.*.local
 
+# Vercel
+.vercel/
+
 # Uploads
 backend/uploads/*
 !backend/uploads/.gitkeep
