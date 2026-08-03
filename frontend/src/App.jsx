@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import HomePage from './pages/HomePage';
+import SearchPage from './pages/SearchPage';
 import OffersPage from './pages/OffersPage';
 import ProductPage from './pages/ProductPage';
 import CartPage from './pages/CartPage';
@@ -31,6 +32,7 @@ function App() {
       <main className="flex-grow-1">
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/search" element={<SearchPage />} />
           <Route path="/offers" element={<OffersPage />} />
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/cart" element={<CartPage />} />

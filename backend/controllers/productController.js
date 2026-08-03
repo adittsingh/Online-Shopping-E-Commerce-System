@@ -6,9 +6,19 @@ const getProducts = asyncHandler(async (req, res) => {
   const pageSize = Number(req.query.pageSize) || 8;
   const page = Number(req.query.pageNumber) || 1;
 
+  const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
   const keyword = req.query.keyword
     ? {
-        name: { $regex: req.query.keyword, $options: 'i' },
+        $or: [
+          { name: { $regex: escapeRegExp(req.query.keyword), $options: 'i' } },
+          {
+            description: {
+              $regex: escapeRegExp(req.query.keyword),
+              $options: 'i',
+            },
+          },
+        ],
       }
     : {};
 

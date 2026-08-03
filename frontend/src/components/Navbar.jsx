@@ -20,7 +20,8 @@ const Navbar = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    navigate(`/?keyword=${encodeURIComponent(term.trim())}`);
+    const q = term.trim();
+    navigate(q ? `/search?keyword=${encodeURIComponent(q)}` : '/search');
   };
 
   const handleLogout = () => {
@@ -31,12 +32,12 @@ const Navbar = () => {
   return (
     <>
       <nav className="amz-top sticky-top">
-        <div className="amz-inner container-fluid d-flex align-items-center gap-2 gap-lg-3">
+        <div className="amz-inner container-fluid d-flex align-items-center gap-3 gap-lg-4">
           <Link to="/" className="amz-hover-box d-flex align-items-center text-decoration-none">
             <img
               src="/logo.png"
               alt="Stockedup"
-              height="38"
+              height="44"
               className="me-1 rounded"
               style={{ objectFit: 'contain' }}
             />
