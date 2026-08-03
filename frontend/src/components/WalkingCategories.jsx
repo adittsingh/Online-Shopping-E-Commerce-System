@@ -1,115 +1,138 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../api';
+import { formatINR } from '../utils/format';
 
-const CATEGORY_STYLE = {
-  Electronics: { emoji: '🤖', color: '#00d4ff' },
-  Fashion: { emoji: '👗', color: '#ff7ab8' },
-  'Home & Kitchen': { emoji: '🍳', color: '#ffb347' },
-  Sports: { emoji: '🏀', color: '#7cff6b' },
-  Beauty: { emoji: '💄', color: '#ff6b9d' },
-  'Toys & Games': { emoji: '🧸', color: '#c4a5ff' },
+const PH =
+  'data:image/svg+xml;utf8,' +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><rect width="400" height="400" fill="#1b2530"/></svg>'
+  );
+
+const pickDiverse = (products) => {
+  const grouped = {};
+  products.forEach((p) => {
+    const key = (p.category && p.category.name) || 'Other';
+    (grouped[key] = grouped[key] || []).push(p);
+  });
+  const out = [];
+  const keys = Object.keys(grouped);
+  let guard = 0;
+  while (out.length < 12 && keys.length && guard < 40) {
+    guard += 1;
+    let any = false;
+    for (let i = 0; i < keys.length && out.length < 12; i += 1) {
+      const arr = grouped[keys[i]];
+      if (arr.length) {
+        out.push(arr.shift());
+        any = true;
+      }
+    }
+    if (!any) break;
+  }
+  return out;
 };
 
-const FALLBACK_STYLE = { emoji: '🛒', color: '#febd69' };
+const DUST = Array.from({ length: 26 }, (_, i) => ({
+  left: `${(i * 3.7 + 1.3) % 100}%`,
+  size: 1.5 + ((i * 7) % 3),
+  dur: 7 + ((i * 5) % 9),
+  delay: -((i * 1.9) % 12),
+  o: 0.25 + ((i * 11) % 40) / 100,
+}));
 
-const EXTRA_CHARACTERS = [
-  { name: 'Headphones', emoji: '🎧', color: '#7ec8ff' },
-  { name: 'Watch', emoji: '⌚', color: '#ffd166' },
-  { name: 'Sneakers', emoji: '👟', color: '#b3ff8a' },
-  { name: 'Smartphone', emoji: '📱', color: '#90e0ef' },
-  { name: 'Camera', emoji: '📷', color: '#ffb3b3' },
-  { name: 'Game Controller', emoji: '🎮', color: '#d9b3ff' },
-  { name: 'Skincare', emoji: '🧴', color: '#ffb3d9' },
-  { name: 'Shopping', emoji: '🛍️', color: '#f9c74f' },
-];
-
-const WalkingCategories = ({ categories: categoriesProp }) => {
-  const [categories, setCategories] = useState(categoriesProp || []);
-  const [stopped, setStopped] = useState(() => new Set());
+const WalkingCategories = () => {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (categoriesProp) {
-      setCategories(categoriesProp);
-      return undefined;
-    }
-    api.get('/categories').then(({ data }) => setCategories(data)).catch(() => {});
-    return undefined;
-  }, [categoriesProp]);
+    let active = true;
+    api
+      .get('/products?pageSize=60')
+      .then(({ data }) => {
+        if (!active) return;
+        const list = pickDiverse(data.products || []).map((p) => ({
+          id: p._id,
+          name: p.name,
+          cat: (p.category && p.category.name) || 'Products',
+          image: p.image,
+          price: p.price,
+        }));
+        setItems(list);
+      })
+      .catch(() => {})
+      .finally(() => active && setLoading(false));
+    return () => {
+      active = false;
+    };
+  }, []);
 
-  const toggle = (id) => {
-    setStopped((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-      return next;
-    });
-  };
+  const loop = useMemo(
+    () => [...items, ...items],
+    [items]
+  );
 
-  if (categories.length === 0) return null;
+  if (loading || items.length === 0) return null;
 
-  const total = categories.length + EXTRA_CHARACTERS.length;
-  const DUR = 18;
-
-  const chars = [
-    ...categories.map((c) => ({
-      id: c._id,
-      name: c.name,
-      ...(CATEGORY_STYLE[c.name] || FALLBACK_STYLE),
-    })),
-    ...EXTRA_CHARACTERS.map((e, i) => ({
-      id: `extra-${i}`,
-      name: e.name,
-      emoji: e.emoji,
-      color: e.color,
-    })),
-  ].map((c, i) => ({
-    ...c,
-    reverse: i % 2 === 1,
-    dur: DUR,
-    delay: -((i / total) * DUR),
-    bottom: 12 + (i % 4) * 26,
-    size: 46 + (i % 3) * 10,
-    bob: 0.5 + (i % 3) * 0.15,
-  }));
+  const renderCard = (item, kind, i) => (
+    <Link
+      key={`${kind}-${item.id}-${i}`}
+      to={`/product/${item.id}`}
+      className={`para-card para-card--${kind}`}
+      style={{ '--fdelay': `${(i % 6) * 0.7}s` }}
+    >
+      <div className="para-card-media">
+        <img
+          src={item.image}
+          alt={item.name}
+          loading="lazy"
+          onError={(e) => {
+            e.currentTarget.src = PH;
+          }}
+        />
+        <span className="para-card-sheen" />
+        <div className="para-card-label">
+          <span className="para-card-cat">{item.cat}</span>
+          <span className="para-card-price">{formatINR(item.price)}</span>
+        </div>
+      </div>
+      <div className="para-card-refl">
+        <img src={item.image} alt="" loading="lazy" onError={(e) => { e.currentTarget.src = PH; }} />
+      </div>
+    </Link>
+  );
 
   return (
-    <section className="cat-walk-section">
-      <div className="cat-walk-head">
-        <span className="cat-walk-title">categories</span>
+    <section className="para-section">
+      <div className="para-head">
+        <span className="para-eyebrow">categories</span>
+        <h2 className="para-title">Stockedup in Motion</h2>
       </div>
-      <div className="cat-walk" role="presentation">
-        <div className="cat-walk-ground" />
-        {chars.map((w) => {
-          const isWalking = !stopped.has(w.id);
-          return (
-            <button
-              key={w.id}
-              type="button"
-              className={`cat-walker ${w.reverse ? 'cat-walker--rev' : ''} ${
-                isWalking ? 'is-walking' : ''
-              }`}
-              style={{
-                '--dur': `${w.dur}s`,
-                '--delay': `${w.delay}s`,
-                '--bottom': `${w.bottom}px`,
-                '--size': `${w.size}px`,
-                '--color': w.color,
-                '--bob': `${w.bob}s`,
-              }}
-              onClick={() => toggle(w.id)}
-              aria-pressed={isWalking}
-              title={isWalking ? 'Tap to stop' : 'Tap to walk'}            >
-              <span className="cat-walker-inner">
-                <span className="cat-walker-emoji">{w.emoji}</span>
-                <span className="cat-walker-shadow" />
-              </span>
-              <span className="cat-walker-label">{w.name}</span>
-            </button>
-          );
-        })}
+      <div className="para-stage">
+        <div className="para-glow para-glow--orange" />
+        <div className="para-glow para-glow--blue" />
+        <div className="para-horizon" />
+        <div className="para-grid" />
+        {DUST.map((d, i) => (
+          <span
+            key={i}
+            className="para-dust"
+            style={{
+              left: d.left,
+              width: d.size,
+              height: d.size,
+              animationDuration: `${d.dur}s`,
+              animationDelay: `${d.delay}s`,
+              '--o': d.o,
+            }}
+          />
+        ))}
+        <div className="para-row para-row--far">
+          {loop.map((item, i) => renderCard(item, 'far', i))}
+        </div>
+        <div className="para-row para-row--near">
+          {loop.map((item, i) => renderCard(item, 'near', i))}
+        </div>
       </div>
     </section>
   );

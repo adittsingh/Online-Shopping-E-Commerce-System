@@ -243,7 +243,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      <WalkingCategories categories={categories} />
+      <WalkingCategories />
 
       <div className="container my-4">
         <Link to="/offers" className="text-decoration-none d-block">
