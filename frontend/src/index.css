@@ -163,19 +163,13 @@ body {
 .cat-walk-title {
   color: #febd69;
   font-weight: 700;
-  font-size: 1rem;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-}
-
-.cat-walk-hint {
-  color: #a7b0ba;
-  font-size: 0.8rem;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
 }
 
 .cat-walk {
   position: relative;
-  height: 170px;
+  height: 210px;
   overflow: hidden;
 }
 
@@ -195,18 +189,22 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
   animation: catWalkRight var(--dur, 16s) linear infinite;
   animation-delay: var(--delay, 0s);
+  animation-play-state: paused;
   z-index: 1;
+}
+
+.cat-walker.is-walking {
+  animation-play-state: running;
 }
 
 .cat-walker--rev {
   animation-name: catWalkLeft;
-}
-
-.cat-walker:hover {
-  animation-play-state: paused;
 }
 
 .cat-walker-inner {
@@ -214,10 +212,11 @@ body {
   flex-direction: column;
   align-items: center;
   animation: catBob 0.6s ease-in-out infinite;
+  animation-play-state: paused;
 }
 
-.cat-walker:hover .cat-walker-inner {
-  animation-play-state: paused;
+.cat-walker.is-walking .cat-walker-inner {
+  animation-play-state: running;
 }
 
 .cat-walker-emoji {
@@ -244,17 +243,18 @@ body {
   background: rgba(0, 0, 0, 0.35);
   margin-top: 2px;
   animation: catShadow 0.6s ease-in-out infinite;
+  animation-play-state: paused;
 }
 
-.cat-walker:hover .cat-walker-shadow {
-  animation-play-state: paused;
+.cat-walker.is-walking .cat-walker-shadow {
+  animation-play-state: running;
 }
 
 .cat-walker-label {
   margin-top: 6px;
-  padding: 2px 9px;
+  padding: 3px 11px;
   border-radius: 999px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   color: #0f1111;
   background: var(--color, #febd69);
@@ -304,7 +304,7 @@ body {
 
 @media (max-width: 576px) {
   .cat-walk {
-    height: 150px;
+    height: 185px;
   }
 }
 
