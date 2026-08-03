@@ -50,6 +50,9 @@ const WalkingCategories = ({ categories: categoriesProp }) => {
 
   if (categories.length === 0) return null;
 
+  const total = categories.length + EXTRA_CHARACTERS.length;
+  const DUR = 18;
+
   const chars = [
     ...categories.map((c) => ({
       id: c._id,
@@ -65,10 +68,11 @@ const WalkingCategories = ({ categories: categoriesProp }) => {
   ].map((c, i) => ({
     ...c,
     reverse: i % 2 === 1,
-    dur: 13 + (i % 4) * 3,
-    delay: -(i * 3.8),
+    dur: DUR,
+    delay: -((i / total) * DUR),
     bottom: 12 + (i % 4) * 26,
     size: 46 + (i % 3) * 10,
+    bob: 0.5 + (i % 3) * 0.15,
   }));
 
   return (
@@ -93,6 +97,7 @@ const WalkingCategories = ({ categories: categoriesProp }) => {
                 '--bottom': `${w.bottom}px`,
                 '--size': `${w.size}px`,
                 '--color': w.color,
+                '--bob': `${w.bob}s`,
               }}
               onClick={() => toggle(w.id)}
               aria-pressed={isWalking}
