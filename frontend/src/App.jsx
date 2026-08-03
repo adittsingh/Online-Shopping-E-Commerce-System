@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import SplashScreen from './components/SplashScreen';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import HomePage from './pages/HomePage';
@@ -26,8 +27,26 @@ import AdminUsers from './pages/admin/AdminUsers';
 import AdminOrders from './pages/admin/AdminOrders';
 
 function App() {
+  const [showSplash, setShowSplash] = useState(() => {
+    try {
+      return !sessionStorage.getItem('stockedup_splash');
+    } catch {
+      return true;
+    }
+  });
+
+  const finishSplash = () => {
+    try {
+      sessionStorage.setItem('stockedup_splash', '1');
+    } catch {
+      /* ignore */
+    }
+    setShowSplash(false);
+  };
+
   return (
     <div className="d-flex flex-column min-vh-100">
+      {showSplash && <SplashScreen onFinish={finishSplash} />}
       <Navbar />
       <main className="flex-grow-1">
         <Routes>
