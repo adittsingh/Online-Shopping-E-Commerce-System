@@ -13,6 +13,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { useCart } from '../context/CartContext';
 import { formatINR } from '../utils/format';
+import WalkingCategories from '../components/WalkingCategories';
 
 const LINE_RULES = [
   { label: 'Headphones & Earbuds', test: /headphone|earbud|neckband|vr/i },
@@ -241,6 +242,8 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+
+      <WalkingCategories categories={categories} />
 
       <div className="container my-4">
         <Link to="/offers" className="text-decoration-none d-block">
