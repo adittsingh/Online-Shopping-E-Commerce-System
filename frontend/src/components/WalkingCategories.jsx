@@ -25,7 +25,7 @@ const EXTRA_CHARACTERS = [
 
 const WalkingCategories = ({ categories: categoriesProp }) => {
   const [categories, setCategories] = useState(categoriesProp || []);
-  const [walking, setWalking] = useState(() => new Set());
+  const [stopped, setStopped] = useState(() => new Set());
 
   useEffect(() => {
     if (categoriesProp) {
@@ -37,7 +37,7 @@ const WalkingCategories = ({ categories: categoriesProp }) => {
   }, [categoriesProp]);
 
   const toggle = (id) => {
-    setWalking((prev) => {
+    setStopped((prev) => {
       const next = new Set(prev);
       if (next.has(id)) {
         next.delete(id);
@@ -79,7 +79,7 @@ const WalkingCategories = ({ categories: categoriesProp }) => {
       <div className="cat-walk" role="presentation">
         <div className="cat-walk-ground" />
         {chars.map((w) => {
-          const isWalking = walking.has(w.id);
+          const isWalking = !stopped.has(w.id);
           return (
             <button
               key={w.id}
@@ -96,8 +96,7 @@ const WalkingCategories = ({ categories: categoriesProp }) => {
               }}
               onClick={() => toggle(w.id)}
               aria-pressed={isWalking}
-              title={isWalking ? 'Tap to stop' : 'Tap to walk'}
-            >
+              title={isWalking ? 'Tap to stop' : 'Tap to walk'}            >
               <span className="cat-walker-inner">
                 <span className="cat-walker-emoji">{w.emoji}</span>
                 <span className="cat-walker-shadow" />
