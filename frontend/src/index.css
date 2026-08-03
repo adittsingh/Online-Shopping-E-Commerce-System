@@ -194,7 +194,7 @@ body {
 
 .para-stage {
   position: relative;
-  height: 340px;
+  height: 400px;
   overflow: hidden;
   mask-image: linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%);
@@ -301,13 +301,13 @@ body {
 }
 
 .para-row--far {
-  top: 30px;
+  top: 16px;
   z-index: 1;
   animation: paraScroll 48s linear infinite;
 }
 
 .para-row--near {
-  bottom: 18px;
+  bottom: 28px;
   z-index: 2;
   animation: paraScrollRev 30s linear infinite;
 }
@@ -341,12 +341,16 @@ body {
 }
 
 .para-card--far {
-  width: 132px;
+  width: 122px;
+  --h: 110px;
+  --amp: -8px;
   animation-delay: var(--fdelay, 0s);
 }
 
 .para-card--near {
-  width: 200px;
+  width: 208px;
+  --h: 210px;
+  --amp: -12px;
   animation-delay: var(--fdelay, 0s);
 }
 
@@ -356,7 +360,7 @@ body {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-12px);
+    transform: translateY(var(--amp, -12px));
   }
 }
 
@@ -453,6 +457,10 @@ body {
   pointer-events: none;
 }
 
+.para-card--far .para-card-refl {
+  display: none;
+}
+
 .para-card-refl img {
   display: block;
   width: 100%;
@@ -462,15 +470,27 @@ body {
 
 @media (max-width: 576px) {
   .para-stage {
-    height: 300px;
+    height: 340px;
+  }
+
+  .para-row--far {
+    top: 12px;
+  }
+
+  .para-row--near {
+    bottom: 20px;
   }
 
   .para-card--far {
-    width: 104px;
+    width: 96px;
+    --h: 92px;
+    --amp: -6px;
   }
 
   .para-card--near {
-    width: 156px;
+    width: 150px;
+    --h: 170px;
+    --amp: -10px;
   }
 }
 
