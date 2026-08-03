@@ -67,40 +67,9 @@ const WalkingCategories = () => {
     };
   }, []);
 
-  const loop = useMemo(
-    () => [...items, ...items],
-    [items]
-  );
+  const loop = useMemo(() => [...items, ...items], [items]);
 
   if (loading || items.length === 0) return null;
-
-  const renderCard = (item, kind, i) => (
-    <Link
-      key={`${kind}-${item.id}-${i}`}
-      to={`/product/${item.id}`}
-      className={`para-card para-card--${kind}`}
-      style={{ '--fdelay': `${(i % 6) * 0.7}s` }}
-    >
-      <div className="para-card-media">
-        <img
-          src={item.image}
-          alt={item.name}
-          loading="lazy"
-          onError={(e) => {
-            e.currentTarget.src = PH;
-          }}
-        />
-        <span className="para-card-sheen" />
-        <div className="para-card-label">
-          <span className="para-card-cat">{item.cat}</span>
-          <span className="para-card-price">{formatINR(item.price)}</span>
-        </div>
-      </div>
-      <div className="para-card-refl">
-        <img src={item.image} alt="" loading="lazy" onError={(e) => { e.currentTarget.src = PH; }} />
-      </div>
-    </Link>
-  );
 
   return (
     <section className="para-section">
@@ -127,11 +96,34 @@ const WalkingCategories = () => {
             }}
           />
         ))}
-        <div className="para-row para-row--far">
-          {loop.map((item, i) => renderCard(item, 'far', i))}
-        </div>
-        <div className="para-row para-row--near">
-          {loop.map((item, i) => renderCard(item, 'near', i))}
+        <div className="car-viewport">
+          <div className="car-row">
+            {loop.map((item, i) => (
+              <Link
+                key={`${item.id}-${i}`}
+                to={`/product/${item.id}`}
+                className="car-card"
+                style={{ '--fdelay': `${(i % 6) * 0.6}s` }}
+              >
+                <div className="car-card-media">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.src = PH;
+                    }}
+                  />
+                  <span className="car-sheen" />
+                </div>
+                <div className="car-card-body">
+                  <div className="car-card-cat">{item.cat}</div>
+                  <div className="car-card-name">{item.name}</div>
+                  <div className="car-card-price">{formatINR(item.price)}</div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </section>

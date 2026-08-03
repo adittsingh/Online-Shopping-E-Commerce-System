@@ -291,32 +291,26 @@ body {
   }
 }
 
-.para-row {
+.car-viewport {
   position: absolute;
-  left: 0;
+  inset: 0;
   display: flex;
-  gap: 26px;
+  align-items: center;
+  overflow: hidden;
+}
+
+.car-row {
+  display: flex;
   width: max-content;
   will-change: transform;
+  animation: carScroll 42s linear infinite;
 }
 
-.para-row--far {
-  top: 16px;
-  z-index: 1;
-  animation: paraScroll 48s linear infinite;
-}
-
-.para-row--near {
-  bottom: 28px;
-  z-index: 2;
-  animation: paraScrollRev 30s linear infinite;
-}
-
-.para-row:hover {
+.car-row:hover {
   animation-play-state: paused;
 }
 
-@keyframes paraScroll {
+@keyframes carScroll {
   from {
     transform: translateX(0);
   }
@@ -325,70 +319,51 @@ body {
   }
 }
 
-@keyframes paraScrollRev {
-  from {
-    transform: translateX(-50%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-.para-card {
-  position: relative;
+.car-card {
   flex-shrink: 0;
-  animation: paraFloat var(--float, 5.5s) ease-in-out infinite;
+  width: 216px;
+  margin-right: 26px;
+  text-decoration: none;
+  transition: transform 0.3s ease;
 }
 
-.para-card--far {
-  width: 122px;
-  --h: 110px;
-  --amp: -8px;
-  animation-delay: var(--fdelay, 0s);
+.car-card:hover {
+  transform: translateY(-8px);
 }
 
-.para-card--near {
-  width: 208px;
-  --h: 210px;
-  --amp: -12px;
-  animation-delay: var(--fdelay, 0s);
-}
-
-@keyframes paraFloat {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(var(--amp, -12px));
-  }
-}
-
-.para-card-media {
+.car-card-media {
   position: relative;
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
   background: #10161d;
+  animation: carFloat 6s ease-in-out infinite;
+  animation-delay: var(--fdelay, 0s);
 }
 
-.para-card--far .para-card-media {
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+@keyframes carFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
-.para-card-media img {
+.car-card-media img {
   display: block;
   width: 100%;
-  height: var(--h, 190px);
+  height: 232px;
   object-fit: cover;
   transition: transform 0.45s ease;
 }
 
-.para-card:hover .para-card-media img {
+.car-card:hover .car-card-media img {
   transform: scale(1.08);
 }
 
-.para-card-sheen {
+.car-sheen {
   position: absolute;
   inset: 0;
   background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.28) 50%, transparent 62%);
@@ -397,108 +372,62 @@ body {
   pointer-events: none;
 }
 
-.para-card:hover .para-card-sheen {
+.car-card:hover .car-sheen {
   transform: translateX(120%);
 }
 
-.para-card-label {
-  position: absolute;
-  left: 8px;
-  right: 8px;
-  bottom: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 6px;
-  padding: 6px 10px;
-  border-radius: 10px;
-  background: rgba(10, 14, 19, 0.72);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  transform: translateY(6px);
-  opacity: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+.car-card-body {
+  padding: 10px 4px 0;
 }
 
-.para-card:hover .para-card-label {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.para-card-cat {
+.car-card-cat {
   font-size: 11px;
   font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
   color: #febd69;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.para-card-price {
-  font-size: 12px;
+.car-card-name {
+  margin-top: 2px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #eef1f5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.car-card-price {
+  margin-top: 4px;
+  font-size: 15px;
   font-weight: 800;
   color: #fff;
-  white-space: nowrap;
-}
-
-.para-card-refl {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  transform: scaleY(-1);
-  opacity: 0.22;
-  border-radius: 14px;
-  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, transparent 62%);
-  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, transparent 62%);
-  filter: blur(0.5px);
-  pointer-events: none;
-}
-
-.para-card--far .para-card-refl {
-  display: none;
-}
-
-.para-card-refl img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 @media (max-width: 576px) {
   .para-stage {
-    height: 340px;
+    height: 300px;
   }
 
-  .para-row--far {
-    top: 12px;
+  .car-card {
+    width: 160px;
+    margin-right: 18px;
   }
 
-  .para-row--near {
-    bottom: 20px;
-  }
-
-  .para-card--far {
-    width: 96px;
-    --h: 92px;
-    --amp: -6px;
-  }
-
-  .para-card--near {
-    width: 150px;
-    --h: 170px;
-    --amp: -10px;
+  .car-card-media img {
+    height: 168px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .para-row,
+  .car-row,
   .para-grid,
   .para-dust,
-  .para-card,
+  .car-card-media,
   .para-glow {
     animation: none;
   }
