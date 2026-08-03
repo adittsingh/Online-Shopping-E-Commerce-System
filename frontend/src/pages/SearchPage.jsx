@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
-import { FaSearch, FaTimes, FaArrowLeft } from 'react-icons/fa';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { FaTimes, FaArrowLeft } from 'react-icons/fa';
 import api from '../api';
 import ProductCard from '../components/ProductCard';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import SearchSuggest from '../components/SearchSuggest';
 
 const PAGE_SIZE = 12;
 
 const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const keyword = searchParams.get('keyword') || '';
   const category = searchParams.get('category') || '';
   const minPrice = searchParams.get('minPrice') || '';
@@ -79,9 +81,12 @@ const SearchPage = () => {
     setSearchParams(next, { replace: true });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    updateParams({ keyword: term.trim() });
+  const handleSearch = (q, opts) => {
+    if (opts && opts.direct) {
+      navigate(`/product/${opts.direct}`);
+      return;
+    }
+    updateParams({ keyword: q.trim() });
   };
 
   const handleClear = () => {
@@ -119,29 +124,18 @@ const SearchPage = () => {
 
       <div className="container my-4">
         <div className="bg-white p-3 p-md-4 rounded-3 shadow-sm">
-          <form
-            onSubmit={handleSubmit}
-            className="d-flex flex-column flex-md-row gap-2 mb-3"
-          >
-            <div className="input-group flex-grow-1">
-              <span className="input-group-text bg-white">
-                <FaSearch />
-              </span>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Search products (e.g. shirt, kurta, shoes)..."
-                value={term}
-                onChange={(e) => setTerm(e.target.value)}
-              />
-            </div>
-            <button type="submit" className="btn btn-primary px-4">
-              Search
-            </button>
-            <Link to="/" className="btn btn-outline-secondary px-4">
+          <div className="d-flex flex-column flex-md-row gap-2 mb-3">
+            <SearchSuggest
+              value={term}
+              onChange={setTerm}
+              onSearch={handleSearch}
+              placeholder="Search products (e.g. shirt, kurta, shoes)..."
+              variant="page"
+            />
+            <Link to="/" className="btn btn-outline-secondary px-4 flex-shrink-0">
               <FaArrowLeft className="me-1" /> Home
             </Link>
-          </form>
+          </div>
           <div className="row g-2">
             <div className="col-md-3">
               <select

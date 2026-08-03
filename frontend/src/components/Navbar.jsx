@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  FaSearch,
   FaShoppingCart,
   FaMapMarkerAlt,
   FaUser,
@@ -11,6 +10,7 @@ import {
 } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import SearchSuggest from './SearchSuggest';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -18,10 +18,13 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [term, setTerm] = useState('');
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    const q = term.trim();
-    navigate(q ? `/search?keyword=${encodeURIComponent(q)}` : '/search');
+  const handleSearch = (q, opts) => {
+    if (opts && opts.direct) {
+      navigate(`/product/${opts.direct}`);
+      return;
+    }
+    const query = (q || '').trim();
+    navigate(query ? `/search?keyword=${encodeURIComponent(query)}` : '/search');
   };
 
   const handleLogout = () => {
@@ -51,22 +54,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          <form
-            className="amz-search d-flex flex-grow-1 mx-lg-2"
-            onSubmit={handleSearch}
-          >
-            <input
-              type="text"
-              className="form-control amz-search-input"
-              placeholder="Search Stockedup"
-              aria-label="Search"
-              value={term}
-              onChange={(e) => setTerm(e.target.value)}
-            />
-            <button type="submit" className="amz-search-btn" aria-label="Search">
-              <FaSearch />
-            </button>
-          </form>
+          <SearchSuggest value={term} onChange={setTerm} onSearch={handleSearch} />
 
           {user ? (
             <div className="dropdown">
