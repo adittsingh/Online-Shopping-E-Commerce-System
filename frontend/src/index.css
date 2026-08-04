@@ -408,18 +408,86 @@ body {
   color: #fff;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
+  .para-head {
+    padding: 18px 12px 4px;
+  }
+
   .para-stage {
-    height: 300px;
+    height: 320px;
   }
 
   .car-card {
-    width: 160px;
-    margin-right: 18px;
+    width: 178px;
+    margin-right: 20px;
   }
 
   .car-card-media img {
-    height: 168px;
+    height: 188px;
+  }
+}
+
+@media (max-width: 576px) {
+  .para-head {
+    padding: 16px 10px 2px;
+  }
+
+  .para-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 3px;
+    padding: 3px 12px;
+  }
+
+  .para-stage {
+    height: 280px;
+  }
+
+  .car-viewport {
+    align-items: center;
+  }
+
+  .car-card {
+    width: 150px;
+    margin-right: 16px;
+  }
+
+  .car-card-media img {
+    height: 158px;
+  }
+
+  .car-card-body {
+    padding: 8px 2px 0;
+  }
+
+  .car-card-cat {
+    font-size: 10px;
+  }
+
+  .car-card-name {
+    font-size: 12.5px;
+  }
+
+  .car-card-price {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 400px) {
+  .para-stage {
+    height: 260px;
+  }
+
+  .car-card {
+    width: 132px;
+    margin-right: 14px;
+  }
+
+  .car-card-media img {
+    height: 140px;
+  }
+
+  .car-card-name {
+    font-size: 12px;
   }
 }
 
