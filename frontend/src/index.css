@@ -26,11 +26,6 @@ body,
   overflow-x: hidden;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-}
-
 input,
 select,
 textarea {
@@ -44,49 +39,6 @@ html {
 
 .amz-inner > * {
   min-width: 0;
-}
-
-@media (max-width: 380px) {
-  .amz-wordmark {
-    display: none;
-  }
-}
-
-@media (max-width: 576px) {
-  .amz-inner {
-    padding: 8px 12px;
-    gap: 8px !important;
-  }
-
-  .amz-acc-label {
-    font-size: 11px;
-  }
-
-  .amz-acc-value {
-    font-size: 12px;
-  }
-
-  .amz-cart-label {
-    font-size: 12px;
-  }
-
-  .amz-search-input {
-    font-size: 16px;
-  }
-}
-
-@media (max-width: 480px) {
-  .amz-acc-value {
-    display: none;
-  }
-
-  .amz-cart-label {
-    display: none;
-  }
-
-  .amz-cart-icon {
-    font-size: 26px;
-  }
 }
 
 .spin {
