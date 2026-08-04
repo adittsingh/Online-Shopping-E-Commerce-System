@@ -9,6 +9,21 @@ const PH =
     '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><rect width="400" height="400" fill="#1b2530"/></svg>'
   );
 
+const FALLBACK_PRODUCTS = [
+  { id: 'f1', name: 'Wireless Bluetooth Headphones', cat: 'Electronics', price: 4149, image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600' },
+  { id: 'f2', name: 'Smartphone 5G 128GB', cat: 'Electronics', price: 33999, image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600' },
+  { id: 'f3', name: 'Laptop 15.6 inch - 16GB RAM', cat: 'Electronics', price: 74999, image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600' },
+  { id: 'f4', name: 'Smart Watch Series', cat: 'Electronics', price: 10999, image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600' },
+  { id: 'f5', name: 'Men Casual Cotton T-Shirt', cat: 'Fashion', price: 1699, image: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600' },
+  { id: 'f6', name: 'Sneakers Running Shoes', cat: 'Fashion', price: 5999, image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600' },
+  { id: 'f7', name: 'Denim Jacket', cat: 'Fashion', price: 2499, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Denim_jacket_%2815355762104%29.jpg/600px-Denim_jacket_%2815355762104%29.jpg' },
+  { id: 'f8', name: 'Non-Stick Cookware Set', cat: 'Home & Kitchen', price: 2999, image: 'https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=600' },
+  { id: 'f9', name: 'Coffee Maker Machine', cat: 'Home & Kitchen', price: 5999, image: 'https://images.unsplash.com/photo-1520970014086-2208d157c9e2?w=600' },
+  { id: 'f10', name: 'Yoga Mat Premium', cat: 'Sports', price: 1499, image: 'https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=600' },
+  { id: 'f11', name: 'Dumbbell Set 20kg', cat: 'Sports', price: 1999, image: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600' },
+  { id: 'f12', name: 'Skincare Vitamin C Serum', cat: 'Beauty', price: 699, image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600' },
+];
+
 const pickDiverse = (products) => {
   const grouped = {};
   products.forEach((p) => {
@@ -42,8 +57,7 @@ const DUST = Array.from({ length: 26 }, (_, i) => ({
 }));
 
 const WalkingCategories = () => {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [items, setItems] = useState(FALLBACK_PRODUCTS);
 
   useEffect(() => {
     let active = true;
@@ -58,10 +72,9 @@ const WalkingCategories = () => {
           image: p.image,
           price: p.price,
         }));
-        setItems(list);
+        if (list.length) setItems(list);
       })
-      .catch(() => {})
-      .finally(() => active && setLoading(false));
+      .catch(() => {});
     return () => {
       active = false;
     };
@@ -69,7 +82,7 @@ const WalkingCategories = () => {
 
   const loop = useMemo(() => [...items, ...items], [items]);
 
-  if (loading || items.length === 0) return null;
+  if (items.length === 0) return null;
 
   return (
     <section className="para-section">

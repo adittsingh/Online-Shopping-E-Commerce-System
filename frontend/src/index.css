@@ -19,6 +19,52 @@ body {
   color: #0f1111;
 }
 
+html,
+body,
+#root {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+.amz-inner > * {
+  min-width: 0;
+}
+
+@media (max-width: 380px) {
+  .amz-wordmark {
+    display: none;
+  }
+
+  .amz-inner {
+    padding: 8px 10px;
+    gap: 8px !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .amz-acc-label {
+    font-size: 11px;
+  }
+
+  .amz-acc-value {
+    font-size: 12px;
+  }
+
+  .amz-cart-label {
+    font-size: 12px;
+  }
+}
+
 .spin {
   animation: spin 1s linear infinite;
 }
