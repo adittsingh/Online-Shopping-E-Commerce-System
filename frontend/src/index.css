@@ -31,6 +31,12 @@ img {
   height: auto;
 }
 
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -44,14 +50,14 @@ html {
   .amz-wordmark {
     display: none;
   }
-
-  .amz-inner {
-    padding: 8px 10px;
-    gap: 8px !important;
-  }
 }
 
 @media (max-width: 576px) {
+  .amz-inner {
+    padding: 8px 12px;
+    gap: 8px !important;
+  }
+
   .amz-acc-label {
     font-size: 11px;
   }
@@ -62,6 +68,24 @@ html {
 
   .amz-cart-label {
     font-size: 12px;
+  }
+
+  .amz-search-input {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .amz-acc-value {
+    display: none;
+  }
+
+  .amz-cart-label {
+    display: none;
+  }
+
+  .amz-cart-icon {
+    font-size: 26px;
   }
 }
 
