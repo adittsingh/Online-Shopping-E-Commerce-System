@@ -10,7 +10,7 @@ router.post('/', protect, admin, upload.single('image'), (req, res) => {
     throw new Error('No image file uploaded');
   }
   const base =
-    process.env.BASE_URL || `http://localhost:${process.env.PORT || 5000}`;
+    process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
   res.status(201).json({
     message: 'Image uploaded',
     image: `${base}/uploads/${req.file.filename}`,

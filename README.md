@@ -2,6 +2,13 @@
 
 A full-featured **Online Shopping (E-Commerce) System** built with the **MERN Stack** (MongoDB, Express.js, React.js, Node.js). Users can browse products, search & filter by category/price, manage a shopping cart, place orders, and manage their profile. An admin dashboard enables administrators to manage products, categories, users, and customer orders through a secure role-based interface.
 
+## Live Demo
+
+- **Website (Frontend):** https://stockedup.vercel.app
+- **API (Backend):** https://stockedup.vercel.app/api
+
+The application is deployed on Vercel (frontend static hosting + serverless Express API) and is accessible to everyone. The frontend calls the backend through relative `/api` routes, so no localhost URLs are used in production.
+
 ## Features
 
 ### User Side
